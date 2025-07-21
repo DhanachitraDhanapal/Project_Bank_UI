@@ -1,3 +1,5 @@
+
+import './LoginPage.css';
 import React, { useState, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
@@ -61,31 +63,41 @@ export default function LoginPage() {
     localStorage.setItem('account', data.account);
     localStorage.setItem('balance', data.balance);
 
-    navigate('/dashboard');
+    // Redirect based on username
+if (username.toLowerCase() === "admin") {
+  navigate("/admin");
+} else {
+  navigate("/dashboard");
+}
+    
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+  <div className="login-container">
+    <form onSubmit={handleSubmit} className="login-form">
       <h2>Login</h2>
-      <label>
-        Username:
-        <input
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required
-        />
-      </label>
+
+      <label htmlFor="username">Username</label>
+      <input
+        id="username"
+        value={username}
+        onChange={e => setUsername(e.target.value)}
+        required
+      />
+
+      <label htmlFor="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+        required
+      />
+
+      {error && <p className="error">{error}</p>}
+
       <button type="submit">Log In</button>
-      {error && <p className="attack">{error}</p>}
     </form>
-  );
+  </div>
+);
 }
